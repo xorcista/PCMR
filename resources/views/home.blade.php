@@ -16,7 +16,7 @@
 
                     {{ __('') }}
 
-                    <h2><a href="/proyectos">Proyectos</a></h2>
+                    <h1>Plataforma de Citas Médicas para Zonas Rurales</h1>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ComentarioController;
 
 Route::get('/', function () {
-    return view('home');
+    return view('index');
 });
 
 Auth::routes();
