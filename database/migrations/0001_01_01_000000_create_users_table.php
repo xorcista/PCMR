@@ -17,6 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('tipo', ['admin', 'medico', 'paciente', 'centro']);
+            $table->foreignId('medico_id')->nullable()->constrained('medicos')->onDelete('cascade');
+            $table->foreignId('paciente_id')->nullable()->constrained('pacientes')->onDelete('cascade');
+            $table->foreignId('centro_salud_id')->nullable()->constrained('centros_salud')->onDelete('cascade');
+            $table->string('telefono')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('foto_perfil')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

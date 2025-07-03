@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('comentarios', function (Blueprint $table) {
+        Schema::create('medicos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });*/
-        Schema::create('comentarios', function (Blueprint $table) {
-            $table->id();
-            $table->text('contenido');
-            $table->foreignId('tarea_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('especialidad_id')->constrained();
+            $table->foreignId('centro_salud_id')->constrained();
+            $table->text('biografia')->nullable();
+            $table->string('numero_colegiado')->unique();
+            $table->json('horarios_disponibles')->nullable();
+            $table->boolean('disponible_telemedicina')->default(false);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comentarios');
+        Schema::dropIfExists('medicos');
     }
 };

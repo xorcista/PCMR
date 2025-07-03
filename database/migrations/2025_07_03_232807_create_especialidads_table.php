@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('tareas', function (Blueprint $table) {
+        Schema::create('especialidades', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });*/
-        Schema::create('tareas', function (Blueprint $table) {
-            $table->id();
-            $table->string('titulo');
+            $table->string('nombre');
             $table->text('descripcion')->nullable();
-            $table->enum('estado', ['pendiente', 'en_progreso', 'completado'])->default('pendiente');
-            $table->foreignId('proyecto_id')->constrained()->onDelete('cascade');
+            $table->string('icono')->default('fa-user-md');
             $table->timestamps();
         });
     }
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tareas');
+        Schema::dropIfExists('especialidades');
     }
 };
