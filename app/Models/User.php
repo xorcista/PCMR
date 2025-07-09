@@ -23,6 +23,11 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function citas()
+    {
+        return $this->hasMany(\App\Models\Cita::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,4 +50,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function esAdmin()
+    {
+        return $this->rol === 'admin';
+    }
+
+    public function esDoctor()
+    {
+        return $this->rol === 'doctor';
+    }
+
+    public function esPaciente()
+    {
+        return $this->rol === 'paciente';
+    }
+
+
+
 }

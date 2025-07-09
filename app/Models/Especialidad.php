@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Especialidad extends Model
 {
+    protected $table = 'especialidades';
+    
     use HasFactory;
 
-    protected $fillable = ['nombre', 'descripcion'];
+    protected $fillable = ['nombre'];
 
-    public function medicos()
+    public function doctores()
     {
-        return $this->hasMany(Medico::class);
+        return $this->hasMany(Doctor::class);
     }
 }

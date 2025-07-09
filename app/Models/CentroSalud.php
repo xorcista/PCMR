@@ -7,35 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CentroSalud extends Model
 {
+    protected $table = 'centros_salud';
+
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'nombre',
-        'descripcion',
-        'direccion',
-        'ciudad',
-        'departamento',
-        'telefono',
-        'email',
-        'latitud',
-        'longitud',
-        'hora_apertura',
-        'hora_cierre',
-    ];
+    protected $fillable = ['nombre', 'direccion', 'telefono', 'distrito'];
 
-    public function user()
+    public function doctores()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function medicos()
-    {
-        return $this->hasMany(Medico::class);
-    }
-
-    public function citas()
-    {
-        return $this->hasManyThrough(Cita::class, Medico::class);
+        return $this->hasMany(Doctor::class);
     }
 }

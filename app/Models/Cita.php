@@ -7,34 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cita extends Model
 {
+    protected $table = 'citas';
+
     use HasFactory;
 
     protected $fillable = [
-        'paciente_id',
-        'medico_id',
-        'fecha_hora',
+        'user_id',          // paciente
+        'doctores_id',
+        'horarios_id',
+        'fecha',
         'motivo',
-        'estado',
-        'notas',
-        'cancelacion_razon',
+        'estado'
     ];
 
-    protected $casts = [
-        'fecha_hora' => 'datetime',
-    ];
-
-    public function paciente()
+    public function usuario()
     {
-        return $this->belongsTo(Paciente::class);
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
-    public function medico()
+    public function doctor()
     {
-        return $this->belongsTo(Medico::class);
+        return $this->belongsTo(Doctor::class, 'doctores_id');
     }
 
-    public function consultaRemota()
+    public function horario()
     {
-        return $this->hasOne(ConsultaRemota::class);
+        return $this->belongsTo(Horario::class, 'horarios_id');
     }
 }

@@ -3,95 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
-use App\Models\Medico;
-use App\Models\Especialidad;
+use App\Models\Doctor;
+use App\Models\Horario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\CitaAgendada;
-use App\Notifications\CitaCancelada;
 
 class CitaController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        
-        if ($user->tipo === 'paciente') {
-            $citas = Cita::where('paciente_id', $user->paciente->id)
-                        ->with(['medico.user', 'medico.especialidad'])
-                        ->orderBy('fecha_hora', 'desc')
-                        ->get();
-        } elseif ($user->tipo === 'medico') {
-            $citas = Cita::where('medico_id', $user->medico->id)
-                        ->with(['paciente.user'])
-                        ->orderBy('fecha_hora', 'desc')
-                        ->get();
-        } else {
-            $citas = collect();
-        }
-        
+        $citas = Cita::with('doctor', 'horario')->where('user_id', Auth::id())->get();
         return view('citas.index', compact('citas'));
     }
 
     public function create()
     {
-        $especialidades = Especialidad::all();
-        $medicos = Medico::with(['user', 'especialidad', 'centroSalud'])->get();
-        
-        return view('citas.create', compact('especialidades', 'medicos'));
+        $doctores = Doctor::all();
+        $horarios = Horario::where('estado', 'activo')->get();
+        return view('citas.create', compact('doctores', 'horarios'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'medico_id' => 'required|exists:medicos,id',
-            'fecha_hora' => 'required|date|after:now',
-            'motivo' => 'required|string|max:500',
-        ]);
-        
-        // Verificar disponibilidad
-        $medico = Medico::find($validated['medico_id']);
-        if (!$this->medicoDisponible($medico, $validated['fecha_hora'])) {
-            return back()->with('error', 'El médico no está disponible en ese horario');
-        }
-        
-        $cita = Cita::create([
-            'paciente_id' => Auth::user()->paciente->id,
-            'medico_id' => $validated['medico_id'],
-            'fecha_hora' => $validated['fecha_hora'],
-            'motivo' => $validated['motivo'],
-            'estado' => 'pendiente',
-        ]);
-        
-        // Notificaciones
-        $cita->medico->user->notify(new CitaAgendada($cita));
-        $cita->paciente->user->notify(new CitaAgendada($cita));
-        
-        return redirect()->route('citas.index')->with('success', 'Cita agendada correctamente');
-    }
-
-    public function cancelar(Request $request, Cita $cita)
-    {
         $request->validate([
-            'razon' => 'required|string|max:500',
+            'doctores_id' => 'required|exists:doctores,id',
+            'horarios_id' => 'required|exists:horarios,id',
+            'fecha' => 'required|date|after_or_equal:today',
+            'motivo' => 'nullable|string|max:255',
         ]);
-        
-        $cita->update([
-            'estado' => 'cancelada',
-            'cancelacion_razon' => $request->razon,
+
+        Cita::create([
+            'user_id' => Auth::id(),
+            'doctores_id' => $request->doctor_id,
+            'horarios_id' => $request->horario_id,
+            'fecha' => $request->fecha,
+            'motivo' => $request->motivo,
+            'estado' => 'pendiente'
         ]);
-        
-        // Notificaciones
-        $cita->medico->user->notify(new CitaCancelada($cita));
-        $cita->paciente->user->notify(new CitaCancelada($cita));
-        
-        return back()->with('success', 'Cita cancelada correctamente');
+
+        return redirect()->route('citas.index')->with('success', 'Cita reservada correctamente.');
     }
 
-    protected function medicoDisponible($medico, $fechaHora)
+    public function show(Cita $cita)
     {
-        // Lógica para verificar disponibilidad del médico
-        // Considerar horarios laborales, citas existentes, etc.
-        return true;
+        //$this->authorize('view', $cita);
+        return view('citas.show', compact('cita'));
+    }
+
+    public function destroy(Cita $cita)
+    {
+        //$this->authorize('delete', $cita);
+        $cita->delete();
+        return redirect()->route('citas.index')->with('success', 'Cita cancelada.');
     }
 }

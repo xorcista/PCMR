@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Formulario de búsqueda</div>
+                <div class="card-header">Panel</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -18,7 +18,7 @@
 
 
 
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <form method="get" action="/lista">
                             <div class="input-group mb-3">
                                 <select class="form-select" name="especialidad" placeholder="Especialidad" aria-label="Username" required>
@@ -48,11 +48,31 @@
                             </div>
                             <div class="input-group mt-5 justify-content-md-center">
                                 <div class="d-grid gap-2 col-6 mx-auto">
-                                    <!-- <button class="btn btn-primary text-center" type="submit">Buscar Cita</button> -->
+                                    <button class="btn btn-primary text-center" type="submit">Buscar Cita</button> 
                                     <a href="/citas/lista" role="button" class="btn btn-primary text-center">Buscar Cita</a>                                
                                 </div>
                             </div>
                         </form>
+                    </div>
+ --}}
+                    <div class="col-md-12">
+                        <div class="button-group">
+                            <!-- Botón solo para administradores -->
+                            @if(auth()->user()->rol === 'admin')
+                                <a href="{{ route('pacientes.index') }}" class="btn btn-primary">Usuarios</a>
+                                <a href="{{ route('doctores.index') }}" class="btn btn-primary">Doctores</a>
+                                <a href="{{ route('especialidades.index') }}" class="btn btn-primary">Especialidades</a>
+                                <a href="{{ route('horarios.index') }}" class="btn btn-primary">Horarios</a>
+                                <a href="{{ route('citas.index') }}" class="btn btn-primary">Citas</a>
+                                <a href="{{ route('teleconsultas.index') }}" class="btn btn-primary">Teleconsultas</a>
+                            @endif
+
+                            <!-- Botón solo para pacientes -->
+                            @if(auth()->user()->rol === 'paciente')
+                                <a href="{{ route('citas.index') }}" class="btn btn-primary">Citas</a>
+                                <a href="{{ route('teleconsultas.index') }}" class="btn btn-primary">Teleconsultas</a>
+                            @endif
+                        </div>
                     </div>
 
 
