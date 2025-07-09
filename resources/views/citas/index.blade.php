@@ -14,6 +14,7 @@
             <tr>
                 <th>Fecha</th>
                 <th>Doctor</th>
+                <th>Especialidad</th>
                 <th>Día / Hora</th>
                 <th>Motivo</th>
                 <th>Estado</th>
@@ -25,6 +26,7 @@
                 <tr>
                     <td>{{ $cita->fecha }}</td>
                     <td>{{ $cita->doctor->nombres }} {{ $cita->doctor->apellidos }}</td>
+                    <td>{{ $cita->doctor->especialidad->nombre }}</td>
                     <td>{{ $cita->horario->dia_semana }} {{ $cita->horario->hora_inicio }} - {{ $cita->horario->hora_fin }}</td>
                     <td>{{ $cita->motivo }}</td>
                     <td>{{ ucfirst($cita->estado) }}</td>
