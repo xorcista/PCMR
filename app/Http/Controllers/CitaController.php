@@ -26,8 +26,8 @@ class CitaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'doctores_id' => 'required|exists:doctores,id',
-            'horarios_id' => 'required|exists:horarios,id',
+            'doctor_id' => 'required|exists:doctores,id',
+            'horario_id' => 'required|exists:horarios,id',
             'fecha' => 'required|date|after_or_equal:today',
             'motivo' => 'nullable|string|max:255',
         ]);
@@ -38,7 +38,7 @@ class CitaController extends Controller
             'horarios_id' => $request->horario_id,
             'fecha' => $request->fecha,
             'motivo' => $request->motivo,
-            'estado' => 'pendiente'
+            'estado' => 'pendiente',
         ]);
 
         return redirect()->route('citas.index')->with('success', 'Cita reservada correctamente.');

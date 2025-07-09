@@ -6,7 +6,6 @@
 
     <form action="{{ route('citas.store') }}" method="POST">
         @csrf
-
         <div class="form-group">
             <label for="doctor_id">Doctor</label>
             <select name="doctor_id" class="form-control" required>
