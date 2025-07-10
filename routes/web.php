@@ -43,14 +43,14 @@ Route::resource('especialidades', EspecialidadController::class)->middleware(['a
 Route::resource('horarios', HorarioController::class)->middleware(['auth', 'rol:doctor,admin']);
 
 Route::resource('citas', CitaController::class)->middleware(['auth', 'rol:paciente,admin']);
-Route::resource('teleconsultas', TeleconsultaController::class)->middleware(['auth', 'rol:paciente,admin']);
+Route::resource('teleconsultas', TeleconsultaController::class)->middleware(['auth', 'rol:paciente,doctor,admin']);
 
 
 
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'rol:paciente,doctor,admin'])->group(function () {
     Route::get('teleconsultas', [TeleconsultaController::class, 'index'])->name('teleconsultas.index');
     Route::get('teleconsultas/crear/{cita}', [TeleconsultaController::class, 'create'])->name('teleconsultas.create');
     Route::get('teleconsultas/{teleconsulta}', [TeleconsultaController::class, 'show'])->name('teleconsultas.show');

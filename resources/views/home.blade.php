@@ -72,6 +72,12 @@
                                 <a href="{{ route('citas.index') }}" class="btn btn-primary">Citas</a>
                                 <a href="{{ route('teleconsultas.index') }}" class="btn btn-primary">Teleconsultas</a>
                             @endif
+
+                            <!-- Botón solo para doctor -->
+                            @if(auth()->user()->rol === 'doctor')
+                                <a href="{{ route('horarios.index') }}" class="btn btn-primary">Horarios</a>
+                                <a href="{{ route('teleconsultas.index') }}" class="btn btn-primary">Teleconsultas</a>
+                            @endif
                         </div>
                     </div>
 

@@ -24,7 +24,12 @@ class TeleconsultaController extends Controller
             abort(403);
         }
 
-        $link = url('/teleconsulta/' . Str::uuid());
+        //$link = url('/teleconsulta/' . Str::uuid());
+
+        $user = Auth::user();
+        $randomCode = substr(md5(uniqid(rand(), true)), 0, 6);
+        $roomName = Str::slug($user->name) . '-' . $randomCode;
+        $link = 'https://meet.jit.si/' . $roomName;
 
         $teleconsulta = Teleconsulta::create([
             'cita_id' => $cita->id,

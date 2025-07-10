@@ -36,6 +36,7 @@
                             @csrf @method('DELETE')
                             <button class="btn btn-danger btn-sm" onclick="return confirm('¿Cancelar esta cita?')">Cancelar</button>
                         </form>
+                        <a href="teleconsultas/crear/{{ $cita->id }}" class="btn btn-dark btn-sm">Crear Teleconsulta</a>
                     </td>
                 </tr>
             @endforeach

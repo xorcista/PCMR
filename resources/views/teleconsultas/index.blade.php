@@ -27,14 +27,16 @@
                     <td>{{ ucfirst(str_replace('_', ' ', $t->estado)) }}</td>
                     <td>
                         <a href="{{ route('teleconsultas.show', $t) }}" class="btn btn-info btn-sm">Ver</a>
-                        <form action="{{ route('teleconsultas.estado', $t) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm">
-                                <option value="pendiente" {{ $t->estado == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                <option value="en_curso" {{ $t->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
-                                <option value="finalizada" {{ $t->estado == 'finalizada' ? 'selected' : '' }}>Finalizada</option>
-                            </select>
-                        </form>
+                        @if(auth()->user()->rol === 'doctor')
+                            <form action="{{ route('teleconsultas.estado', $t) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm">
+                                    <option value="pendiente" {{ $t->estado == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                    <option value="en_curso" {{ $t->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
+                                    <option value="finalizada" {{ $t->estado == 'finalizada' ? 'selected' : '' }}>Finalizada</option>
+                                </select>
+                            </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach
