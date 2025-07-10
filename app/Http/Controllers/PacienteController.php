@@ -59,9 +59,11 @@ class PacienteController extends Controller
             'email'    => 'required|email|unique:users,email,' . $paciente->id,
             'telefono' => 'nullable|string|max:20',
             'dni'      => 'nullable|digits:8|unique:users,dni,' . $paciente->id,
+            'rol'      => 'nullable',
         ]);
 
-        $paciente->update($request->all());
+        //$paciente->update($request->all());
+        $paciente->update($request->only(['name', 'email', 'telefono', 'dni', 'rol']));
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado.');
     }
